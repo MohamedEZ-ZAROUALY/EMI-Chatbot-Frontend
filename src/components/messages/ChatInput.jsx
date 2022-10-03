@@ -16,32 +16,32 @@ import Animated, {
 } from "react-native-reanimated";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import EmojiPicker from "./emojis/EmojiPicker";
 
-import { useKeyboard } from "@react-native-community/hooks";
 
 import { theme } from "../../theme";
 
-const ChatInput = ({ reply, closeReply, isLeft, username }) => {
+const ChatInput = ({ reply, closeReply, isLeft, username , messages ,setMessages,fetchResponse}) => {
 	const [message, setMessage] = useState("");
-	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const height = useSharedValue(70);
+	
+	const handleMessageSent = () => {
+		const newMessages = messages.push({
+			user: 0,
+			time: "12:09",
+			content: message
+		})
+		
+		setMessage("");
+		fetchResponse(message);
 
-	useEffect(() => {
-		if (showEmojiPicker) {
-			height.value = withTiming(400);
-		} else {
-			height.value = reply ? withSpring(130) : withSpring(70);
-		}
-	}, [showEmojiPicker]);
+		
+	};
 
-	useEffect(() => {
-		if (reply) {
-			height.value = showEmojiPicker ? withTiming(450) : withTiming(130);
-		} else {
-			height.value = showEmojiPicker ? withSpring(400) : withSpring(70);
+	const handleKeyDown = (e) => {
+		if(e.nativeEvent.key == "Enter"){
+			handleMessageSent();
 		}
-	}, [reply]);
+	}
 
 	const heightAnimatedStyle = useAnimatedStyle(() => {
 		return {
@@ -68,49 +68,26 @@ const ChatInput = ({ reply, closeReply, isLeft, username }) => {
 			) : null}
 			<View style={styles.innerContainer}>
 				<View style={styles.inputAndMicrophone}>
-					<TouchableOpacity
-						style={styles.emoticonButton}
-						onPress={() => setShowEmojiPicker((value) => !value)}
-					>
-						<Icon
-							name={
-								showEmojiPicker ? "close" : "emoticon-outline"
-							}
-							size={23}
-							color={theme.colors.description}
-						/>
-					</TouchableOpacity>
 					<TextInput
 						multiline
 						placeholder={"Type something..."}
 						style={styles.input}
 						value={message}
 						onChangeText={(text) => setMessage(text)}
+						onKeyPress={handleKeyDown}
 					/>
-					<TouchableOpacity style={styles.rightIconButtonStyle}>
-						<Icon
-							name="paperclip"
-							size={23}
-							color={theme.colors.description}
-						/>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.rightIconButtonStyle}>
-						<Icon
-							name="camera"
-							size={23}
-							color={theme.colors.description}
-						/>
-					</TouchableOpacity>
+		
 				</View>
-				<TouchableOpacity style={styles.sendButton}>
+				<TouchableOpacity style={styles.sendButton}
+				 onPress={handleMessageSent}
+				>
 					<Icon
-						name={message ? "send" : "microphone"}
+						name={message ? "send" : null }
 						size={23}
 						color={theme.colors.white}
 					/>
 				</TouchableOpacity>
 			</View>
-			<EmojiPicker />
 		</Animated.View>
 	);
 };

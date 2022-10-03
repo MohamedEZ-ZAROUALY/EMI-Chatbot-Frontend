@@ -1,14 +1,45 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text } from "react-native";
 
 import ChatHeader from "../components/messages/ChatHeader";
 import ChatInput from "../components/messages/ChatInput";
 import MessagesList from "../components/messages/MessagesList";
 
-const MessagesScreen = ({ navigation, route }) => {
-	const { username, bio, picture, isBlocked, isMuted } = route.params;
+import { fetchData , Options } from '../utils/fetchData.js' ;
+
+const MessagesScreen = () => {
+	const username = "EMI-BOT"
 	const [reply, setReply] = useState("");
 	const [isLeft, setIsLeft] = useState();
+	const [messages, setMessages] = useState([
+		{
+			user: 1,
+			time: "12:09",
+			content: "Bonjour ! C'est EMI-BOT ! Veuillez poser vos questions à moi !"
+		}
+	]);
+
+	useEffect(() => {
+		console.log(messages);
+	  }, [messages]);
+
+	
+	const fetchResponse = async (message) => {
+			
+		const response = await fetchData('http://10.72.177.154:8080/testing?questionString='+message, Options);
+		const toSaveResponse = response.message ;
+		setMessages( [ ...messages , {
+			user: 1,
+			time: "12:09",
+			content: toSaveResponse
+		}])
+
+		setMessages( [ ...messages , {
+			user: 1,
+			time: "12:09",
+			content: toSaveResponse
+		}])
+	};
 
 	const swipeToReply = (message, isLeft) => {
 		setReply(message.length > 50 ? message.slice(0, 50) + '...' : message);
@@ -22,13 +53,12 @@ const MessagesScreen = ({ navigation, route }) => {
 	return (
 		<View style={{ flex: 1 }}>
 			<ChatHeader
-				onPress={() => {}}
 				username={username}
-				picture={picture}
+				/*picture={picture}*/
 				onlineStatus={'Online'}
 			/>
-			<MessagesList onSwipeToReply={swipeToReply} />
-			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username={username} />
+			<MessagesList onSwipeToReply={swipeToReply} messages={messages} />
+			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username={username} messages={messages} setMessages={setMessages}  fetchResponse={fetchResponse}/>
 		</View>
 	);
 };

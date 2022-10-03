@@ -148,8 +148,7 @@ const HomeNavigator = () => {
           tabBarLabel: "Disc.",
         }}
       />
-      <Tab.Screen name="Stories" component={StoriesScreen} />
-      <Tab.Screen name="Calls" component={CallsScreen} />
+    
     </Tab.Navigator>
   );
 };

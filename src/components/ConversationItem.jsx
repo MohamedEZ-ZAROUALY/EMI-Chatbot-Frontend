@@ -11,28 +11,7 @@ const ConversationItem = ({ picture, username, bio, lastMessage, time, isBlocked
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation();
 
-	const showStoryCircle = () => {
-		if (hasStory) {
-			return {
-				borderColor: theme.colors.storyBorder,
-				borderWidth: 2
-			}
-		}
-	};
 
-	const showNotification = (type) => {
-		if (notification && type === "number") {
-			return (
-				<View style={styles.notificationCircle}>
-					<Text style={styles.notification}>{notification}</Text>
-				</View>
-			);
-		} else if (notification && type === "imageCircle") {
-			return {
-				borderColor: theme.colors.primary
-			}
-		}
-	};
 
 	return (
 		<View style={styles.container}>
@@ -46,7 +25,7 @@ const ConversationItem = ({ picture, username, bio, lastMessage, time, isBlocked
 			})}>
 				<TouchableOpacity 
 					onPress={() => setModalVisible(currentValue => !currentValue)}
-					style={[styles.imageContainer, showStoryCircle()]}>
+					style={styles.imageContainer}>
 					<Image style={styles.image} source={{ uri: picture }} />
 				</TouchableOpacity>
 				<View style={{
@@ -65,7 +44,7 @@ const ConversationItem = ({ picture, username, bio, lastMessage, time, isBlocked
 						justifyContent: 'space-between'
 					}}>
 						<Text style={styles.message}>{lastMessage}</Text>
-						{showNotification('number')}
+						
 					</View>
 				</View>
 			</TouchableOpacity>
