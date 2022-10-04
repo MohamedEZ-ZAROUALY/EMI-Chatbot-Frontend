@@ -3,21 +3,19 @@ import { theme } from './theme';
 
 export const authStyles = StyleSheet.create({
 	container: {
-		flex: 1,
 		height: '100%',
-		backgroundColor: theme.colors.primary
+		backgroundColor: theme.colors.primary,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	form: {
-		flex: 2
+		flex: 2,
+		width : '80%',
+		borderRadius : 20
 	},
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center'
-	},
-	signUp: {
-		alignSelf: 'center',
-		color: 'darkgray',
-		fontSize: 14
 	}
 });
 

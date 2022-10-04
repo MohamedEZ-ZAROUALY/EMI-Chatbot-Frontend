@@ -20,14 +20,17 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { theme } from "../../theme";
 
-const ChatInput = ({ reply, closeReply, isLeft, username , messages ,setMessages,fetchResponse}) => {
+const ChatInput = ({ reply, closeReply, isLeft, username , messages ,today,fetchResponse}) => {
 	const [message, setMessage] = useState("");
 	const height = useSharedValue(70);
 	
 	const handleMessageSent = () => {
+		const hour = today.getHours();
+		const minute = today.getMinutes();
+
 		const newMessages = messages.push({
 			user: 0,
-			time: "12:09",
+			time: hour + ':' + minute,
 			content: message
 		})
 		
@@ -48,7 +51,6 @@ const ChatInput = ({ reply, closeReply, isLeft, username , messages ,setMessages
 			height: height.value
 		}
 	})
-
 
 	return (
 		<Animated.View style={[styles.container, heightAnimatedStyle]}>
@@ -78,13 +80,18 @@ const ChatInput = ({ reply, closeReply, isLeft, username , messages ,setMessages
 					/>
 		
 				</View>
-				<TouchableOpacity style={styles.sendButton}
+				<TouchableOpacity style={
+					message ?
+						 styles.sendButton
+						: styles.sendButtonDisabled
+					} 
+					disabled={message ? false : true}
 				 onPress={handleMessageSent}
 				>
 					<Icon
 						name={message ? "send" : null }
 						size={23}
-						color={theme.colors.white}
+						color={ theme.colors.white}
 					/>
 				</TouchableOpacity>
 			</View>
@@ -189,12 +196,20 @@ const styles = StyleSheet.create({
 		paddingTop: 20,
 	},
 	sendButton: {
-		backgroundColor: theme.colors.primary,
 		borderRadius: 50,
 		height: 50,
 		width: 50,
 		alignItems: "center",
 		justifyContent: "center",
+		backgroundColor: theme.colors.primary
+	},
+	sendButtonDisabled: {
+		borderRadius: 50,
+		height: 50,
+		width: 50,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor:"#A9A9A9"
 	},
 });
 

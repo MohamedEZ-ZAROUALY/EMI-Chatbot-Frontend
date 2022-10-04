@@ -3,18 +3,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import VerificationScreen from '../screens/VerificationScreen';
 import MessagesScreen from '../screens/MessagesScreen';
-import OnCallScreen from '../screens/OnCallScreen';
-
-import HomeNavigator from './HomeNavigator';
-import Header from '../components/common/Header';
-
 
 const Stack = createStackNavigator();
 
 const RootNavigator = () => {
 	return (
 		<Stack.Navigator 
-			initialRouteName="Conversation" 
+			initialRouteName="VerificationScreen" 
 			screenOptions={{ headerShown: false }}
 		>
 			<Stack.Screen name="VerificationScreen" component={VerificationScreen} />

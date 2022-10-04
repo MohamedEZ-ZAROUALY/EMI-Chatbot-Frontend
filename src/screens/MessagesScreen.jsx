@@ -8,37 +8,39 @@ import MessagesList from "../components/messages/MessagesList";
 import { fetchData , Options } from '../utils/fetchData.js' ;
 
 const MessagesScreen = () => {
-	const username = "EMI-BOT"
+	const username = "EMI-BOT";
+	const today = new Date();
 	const [reply, setReply] = useState("");
 	const [isLeft, setIsLeft] = useState();
+	const [hour, setHour] = useState(today.getHours());
+	const [minute, setMinute] = useState(today.getMinutes());
+
 	const [messages, setMessages] = useState([
 		{
 			user: 1,
-			time: "12:09",
+			time: hour + ":" + minute,
 			content: "Bonjour ! C'est EMI-BOT ! Veuillez poser vos questions à moi !"
 		}
 	]);
 
 	useEffect(() => {
-		console.log(messages);
+		
+		console.log(hour);
+		setHour(today.getHours());
+		setMinute(today.getMinutes());
 	  }, [messages]);
 
 	
 	const fetchResponse = async (message) => {
 			
-		const response = await fetchData('http://10.72.177.154:8080/testing?questionString='+message, Options);
+		const response = await fetchData('http://10.72.177.131:8080/testing?questionString='+message, Options);
 		const toSaveResponse = response.message ;
 		setMessages( [ ...messages , {
 			user: 1,
-			time: "12:09",
+			time: hour + ":" + minute,
 			content: toSaveResponse
 		}])
 
-		setMessages( [ ...messages , {
-			user: 1,
-			time: "12:09",
-			content: toSaveResponse
-		}])
 	};
 
 	const swipeToReply = (message, isLeft) => {
@@ -58,7 +60,7 @@ const MessagesScreen = () => {
 				onlineStatus={'Online'}
 			/>
 			<MessagesList onSwipeToReply={swipeToReply} messages={messages} />
-			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username={username} messages={messages} setMessages={setMessages}  fetchResponse={fetchResponse}/>
+			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username={username} messages={messages} setMessages={setMessages}  fetchResponse={fetchResponse} today={today}/>
 		</View>
 	);
 };
