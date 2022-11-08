@@ -20,17 +20,17 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { theme } from "../../theme";
 
-const ChatInput = ({ reply, closeReply, isLeft, username , messages ,today,fetchResponse}) => {
+const ChatInput = ({ reply, closeReply, isLeft, username , messages ,fetchResponse}) => {
 	const [message, setMessage] = useState("");
 	const height = useSharedValue(70);
-	
-	const handleMessageSent = () => {
-		const hour = today.getHours();
-		const minute = today.getMinutes();
+	const [date,setDate] = useState(new Date()) ;
 
-		const newMessages = messages.push({
+	const handleMessageSent = () => {
+
+		setDate(new Date());
+		const newMessages = messages.push({   
 			user: 0,
-			time: hour + ':' + minute,
+			time: date.getHours() + ':' + date.getMinutes() ,
 			content: message
 		})
 		

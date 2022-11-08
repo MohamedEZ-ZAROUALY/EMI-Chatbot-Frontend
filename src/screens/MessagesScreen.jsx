@@ -9,25 +9,21 @@ import { fetchData , Options } from '../utils/fetchData.js' ;
 
 const MessagesScreen = () => {
 	const username = "EMI-BOT";
-	const today = new Date();
+	const [date,setDate] = useState(new Date());
 	const [reply, setReply] = useState("");
 	const [isLeft, setIsLeft] = useState();
-	const [hour, setHour] = useState(today.getHours());
-	const [minute, setMinute] = useState(today.getMinutes());
 
 	const [messages, setMessages] = useState([
 		{
 			user: 1,
-			time: hour + ":" + minute,
+			time: date.getHours() + ":" + date.getMinutes(),
 			content: "Bonjour ! C'est EMI-BOT ! Veuillez poser vos questions à moi !"
 		}
 	]);
 
 	useEffect(() => {
-		
-		console.log(hour);
-		setHour(today.getHours());
-		setMinute(today.getMinutes());
+		setDate(new Date());
+		console.log(date);
 	  }, [messages]);
 
 	
@@ -56,11 +52,11 @@ const MessagesScreen = () => {
 		<View style={{ flex: 1 }}>
 			<ChatHeader
 				username={username}
-				/*picture={picture}*/
 				onlineStatus={'Online'}
 			/>
 			<MessagesList onSwipeToReply={swipeToReply} messages={messages} />
-			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username={username} messages={messages} setMessages={setMessages}  fetchResponse={fetchResponse} today={today}/>
+			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username={username}
+			 messages={messages} setMessages={setMessages}  fetchResponse={fetchResponse} date={date}/>
 		</View>
 	);
 };
